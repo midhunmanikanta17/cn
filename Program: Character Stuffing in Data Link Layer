@@ -1,0 +1,29 @@
+# Program: Character Stuffing in Data Link Layer
+def character_stuffing(data, flag='F', esc='E'):
+    stuffed = flag
+    for char in data:
+        if char == flag or char == esc:
+            stuffed += esc  # add escape character before flag or esc
+        stuffed += char
+    stuffed += flag
+    return stuffed
+def character_destuffing(stuffed, flag='F', esc='E'):
+    destuffed = ''
+    i = 1  # skip the starting flag
+    while i < len(stuffed) - 1:  # skip the ending flag
+        if stuffed[i] == esc:
+            i += 1  # skip the escape character
+        destuffed += stuffed[i]
+        i += 1
+    return destuffed
+# ---------- MAIN ----------
+data = input("Enter the data string: ")
+stuffed = character_stuffing(data)
+print("\nStuffed Data: ", stuffed)
+print("Destuffed Data: ", character_destuffing(stuffed))
+
+OUT PUT:
+Enter the data string: HELLOFEE
+Stuffed Data:  FHELLOEEFEEE F
+Destuffed Data:  HELLOFEE
+
