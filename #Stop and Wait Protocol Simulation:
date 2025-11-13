@@ -1,0 +1,44 @@
+#Stop and Wait Protocol Simulation:
+import random
+import time
+
+def stop_and_wait(frames):
+    print("\n--- Stop and Wait Protocol Simulation ---")
+    for i in range(frames):
+        print(f"\nSending Frame {i}")
+        time.sleep(1)
+        ack = random.choice([True, False])  # randomly simulate ACK success/failure
+        if ack:
+            print(f"ACK for Frame {i} received ✅")
+        else:
+            print(f"ACK for Frame {i} lost ❌ — Retransmitting...")
+            time.sleep(1)
+            print(f"Frame {i} retransmitted ✅")
+
+n = int(input("Enter number of frames to send: "))
+stop_and_wait(n)
+
+OUTPUT
+Enter number of frames to send: 5
+
+--- Stop and Wait Protocol Simulation ---
+
+Sending Frame 0
+ACK for Frame 0 received ✅
+
+Sending Frame 1
+ACK for Frame 1 lost ❌ — Retransmitting...
+Frame 1 retransmitted ✅
+
+Sending Frame 2
+ACK for Frame 2 lost ❌ — Retransmitting...
+Frame 2 retransmitted ✅
+
+Sending Frame 3
+ACK for Frame 3 lost ❌ — Retransmitting...
+Frame 3 retransmitted ✅
+
+Sending Frame 4
+ACK for Frame 4 lost ❌ — Retransmitting...
+Frame 4 retransmitted ✅
+
