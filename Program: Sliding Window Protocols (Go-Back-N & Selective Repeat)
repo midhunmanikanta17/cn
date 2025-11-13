@@ -1,0 +1,75 @@
+Program: Sliding Window Protocols (Go-Back-N & Selective Repeat)
+# Program: Sliding Window Protocols
+# Implements Go-Back-N (GBN) and Selective Repeat (SR)
+# With Dynamic Input for CN Lab
+def go_back_n():
+    total_frames = int(input("Enter total number of frames to send: "))
+    window_size = int(input("Enter window size: "))
+    sent = 0
+    while sent < total_frames:
+        print("\nSender: Sending frames", end=" ")
+        for i in range(sent, min(sent + window_size, total_frames)):
+            print(i, end=" ")
+        print()
+        # Simulate acknowledgement
+        ack = int(input("Enter last Acknowledgement received (-1 for lost): "))
+        if ack == -1:
+            print("Acknowledgement lost! Retransmitting all frames in current window...")
+            # Retransmit same window
+        else:
+            print(f"Acknowledgement received for frame {ack}")
+            sent = ack + 1  # Move window ahead
+    print("\nAll frames successfully transmitted using Go-Back-N!")
+def selective_repeat():
+    total_frames = int(input("Enter total number of frames to send: "))
+    window_size = int(input("Enter window size: "))
+    ack = [0] * total_frames
+    sent = 0
+    while sent < total_frames:
+        print("\nSender: Sending frames", end=" ")
+        for i in range(sent, min(sent + window_size, total_frames)):
+            if ack[i] == 0:
+                print(i, end=" ")
+        print()
+
+        for i in range(sent, min(sent + window_size, total_frames)):
+            if ack[i] == 0:
+                status = input(f"Frame {i} received successfully? (y/n): ").lower()
+                if status == 'y':
+                    ack[i] = 1
+                    print(f"Acknowledgement for frame {i} received.")
+                else:
+                    print(f"Frame {i} lost! Will retransmit later.")
+
+        # Move window forward for acknowledged frames
+        while sent < total_frames and ack[sent] == 1:
+            sent += 1
+
+    print("\nAll frames successfully transmitted using Selective Repeat!")
+
+# ---------------- MAIN MENU ----------------
+print("==== SLIDING WINDOW PROTOCOL SIMULATION ====")
+print("1. Go-Back-N (GBN)")
+print("2. Selective Repeat (SR)")
+
+choice = int(input("Enter your choice (1/2): "))
+
+if choice == 1:
+    go_back_n()
+elif choice == 2:
+    selective_repeat()
+else:
+    print("Invalid choice! Please enter 1 or 2.")
+OUTPUT
+==== SLIDING WINDOW PROTOCOL SIMULATION ====
+1. Go-Back-N (GBN)
+2. Selective Repeat (SR)
+Enter your choice (1/2): 1
+Enter total number of frames to send: 3
+Enter window size: 5
+
+Sender: Sending frames 0 1 2 
+Enter last Acknowledgement received (-1 for lost): 2
+Acknowledgement received for frame 2
+
+All frames successfully transmitted using Go-Back-N!
