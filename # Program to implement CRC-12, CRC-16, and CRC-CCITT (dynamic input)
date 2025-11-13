@@ -1,0 +1,51 @@
+# Program to implement CRC-12, CRC-16, and CRC-CCITT (dynamic input)
+def crc_calc(data, poly, width, init=0):
+    crc = init
+    for byte in data:
+        crc ^= (byte << (width - 8))
+        for _ in range(8):
+            if crc & (1 << (width - 1)):
+                crc = ((crc << 1) ^ poly) & ((1 << width) - 1)
+            else:
+                crc = (crc << 1) & ((1 << width) - 1)
+    return crc
+
+# Input: data bytes in decimal (e.g., 171 205)
+data = list(map(int, input("Enter data bytes (space-separated): ").split()))
+
+crc12   = crc_calc(data, 0x80F, 12)
+crc16   = crc_calc(data, 0x8005, 16)
+crc_ccit = crc_calc(data, 0x1021, 16, init=0xFFFF)
+print("\nData:", data)
+print("CRC-12:     ", hex(crc12))
+print("CRC-16:     ", hex(crc16))
+print("CRC-CCITT:  ", hex(crc_ccit))
+OUT PUT
+Enter data bytes (space-separated): 171 205
+Data: [171, 205]
+CRC-12:      0x377
+CRC-16:      0xf8a4
+CRC-CCITT:   0xd46a
+#Hamming code
+def hamming_encode(data):
+    data = list(map(int, data))
+    m, r = len(data), 0
+    while (2**r) < (m + r + 1): r += 1
+    n = m + r
+    res = [0]*(n+1)
+    j = 0
+    for i in range(1, n+1):
+        if i & (i-1): res[i] = data[j]; j += 1
+    for i in range(r):
+        p = 2**i
+        res[p] = sum(res[j] for j in range(1, n+1) if j & p and j != p) % 2
+    return ''.join(map(str, res[1:]))
+
+data = input("Enter data bits (e.g., 1011): ")
+print("Hamming Code:", hamming_encode(data))
+OUTPUT:
+Enter data bits (e.g., 1011): 1011
+Hamming Code: 0110011
+Program: Sliding Window Protocols (Go-Back-N & Selective Repeat)
+# Program: Sliding Window Protocols
+# Implements Go-Back-N (GBN) and Selective Repeat (SR)
