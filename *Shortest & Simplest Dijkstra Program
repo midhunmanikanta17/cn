@@ -1,0 +1,24 @@
+import heapq
+
+n = int(input("Vertices: "))
+v = input("Names: ").split()
+g = {x:{} for x in v}
+
+for _ in range(int(input("Edges: "))):
+    a,b,w = input().split(); w=int(w)
+    g[a][b]=w; g[b][a]=w        # undirected
+
+s = input("Source: "); d = input("Dest: ")
+dist,prev = {x:1e9 for x in v},{s:None}
+dist[s]=0; pq=[(0,s)]
+
+while pq:
+    du,u=heapq.heappop(pq)
+    for nb,w in g[u].items():
+        if du+w<dist[nb]:
+            dist[nb],prev[nb]=du+w,u
+            heapq.heappush(pq,(dist[nb],nb))
+
+path=[]
+while d: path.insert(0,d); d=prev.get(d)
+print("Path:"," → ".join(path))
