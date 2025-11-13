@@ -1,0 +1,53 @@
+# Program: Leaky Bucket Algorithm (Simple Version)
+
+bucket_size = int(input("Enter bucket size: "))
+output_rate = int(input("Enter output rate: "))
+n = int(input("Enter number of time slots: "))
+
+bucket_content = 0
+
+for i in range(n):
+    incoming = int(input(f"Enter number of packets at time {i+1}: "))
+
+    print(f"\nTime {i+1}:")
+    print(f"Incoming packets = {incoming}")
+
+    # Check overflow
+    if incoming + bucket_content > bucket_size:
+        overflow = (incoming + bucket_content) - bucket_size
+        print(f"Bucket overflow! {overflow} packet(s) lost.")
+        bucket_content = bucket_size
+    else:
+        bucket_content += incoming
+
+    # Leak packets
+    if bucket_content >= output_rate:
+        bucket_content -= output_rate
+        print(f"Packets sent = {output_rate}")
+    else:
+        print(f"Packets sent = {bucket_content}")
+        bucket_content = 0
+
+    print(f"Packets remaining in bucket = {bucket_content}")
+
+# Empty remaining packets
+while bucket_content > 0:
+    print("\nEmptying remaining packets...")
+    if bucket_content >= output_rate:
+        bucket_content -= output_rate
+        print(f"Packets sent = {output_rate}")
+    else:
+        print(f"Packets sent = {bucket_content}")
+        bucket_content = 0
+    print(f"Packets remaining = {bucket_content}")
+OUT PUT:
+Enter bucket size: 3
+Enter output rate: 2
+Enter number of time slots: 4
+Enter number of packets at time 1: 1
+
+Time 1:
+Incoming packets = 1
+Packets sent = 1
+Packets remaining in bucket = 0
+Enter number of packets at time 2:
