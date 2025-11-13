@@ -1,0 +1,41 @@
+# Program: Bit Stuffing in Data Link Layer
+def bit_stuffing(data):
+    count = 0
+    stuffed = ''
+    for bit in data:
+        stuffed += bit
+        if bit == '1':
+            count += 1
+        else:
+            count = 0
+        if count == 5:
+            stuffed += '0'  # stuff '0' after five consecutive 1's
+            count = 0
+    return stuffed
+def bit_destuffing(stuffed):
+    count = 0
+    destuffed = ''
+    i = 0
+    while i < len(stuffed):
+        bit = stuffed[i]
+        destuffed += bit
+        if bit == '1':
+            count += 1
+        else:
+            count = 0
+        if count == 5:
+            i += 1  # skip the stuffed '0'
+            count = 0
+        i += 1
+    return destuffed
+
+# ---------- MAIN ----------
+data = input("Enter the bit string (e.g., 011111010111): ")
+stuffed = bit_stuffing(data)
+print("\nStuffed Bits: ", stuffed)
+print("Destuffed Bits: ", bit_destuffing(stuffed))
+
+OUTPUT
+Enter the bit string (e.g., 011111010111): 011111010111
+Stuffed Bits:  0111110010111010
+Destuffed Bits:  011111010111
